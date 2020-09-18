@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 Widget appBarMain (BuildContext context){
   return AppBar(
-    title: Center(child: Text('jiwan')),
+    title: Center(child: Text('FlutterChatApp')),
     
   );
 }
@@ -24,6 +24,14 @@ InputDecoration textFieldInputDecoration(String hint){
 TextStyle inputTextStyle(){
   return TextStyle(
     color:Colors.white,
+    fontSize:16,
+    );
+
+}
+TextStyle mediumInputTextStyle(){
+  return TextStyle(
+    color:Colors.white,
+    fontSize:18,
     );
 
 }
