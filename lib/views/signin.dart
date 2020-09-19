@@ -1,5 +1,7 @@
 import 'package:chatApp/services/auth.dart';
 import 'package:chatApp/views/chatroomscreen.dart';
+import 'package:chatApp/views/forgetpassword.dart';
+import 'package:chatApp/views/signup.dart';
 import 'package:chatApp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -86,9 +88,17 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
-                            child: Text(
-                              "forgot password?",
-                              style: inputTextStyle(),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ResetPassword()));
+                              },
+                              child: Text(
+                                "forgot password?",
+                                style: inputTextStyle(),
+                              ),
                             )),
                       ),
                       SizedBox(
@@ -145,12 +155,20 @@ class _SignInState extends State<SignIn> {
                             "don't have an account? ",
                             style: inputTextStyle(),
                           ),
-                          Text(
-                            "Register now ",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              decoration: TextDecoration.underline,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUP()));
+                            },
+                            child: Text(
+                              "Register now ",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ],
