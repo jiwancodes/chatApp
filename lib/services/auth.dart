@@ -1,3 +1,4 @@
+import 'package:chatApp/helper/helperfunctions.dart';
 import 'package:chatApp/modal/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -41,9 +42,12 @@ class AuthMethods{
 
    Future signOut() async {
         try{
+           HelperFunctions.saveUserLoggedInSharedPreference(false);
             return await _auth.signOut();
+           
 
           }catch(e){
+             HelperFunctions.saveUserLoggedInSharedPreference(true);
                print(e.toString());
            }
     }

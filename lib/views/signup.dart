@@ -1,9 +1,9 @@
+import 'package:chatApp/helper/helperfunctions.dart';
 import 'package:chatApp/services/auth.dart';
 import 'package:chatApp/services/database.dart';
 import 'package:chatApp/views/signin.dart';
 import 'package:chatApp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-
 class SignUP extends StatefulWidget {
   @override
   _SignUPState createState() => _SignUPState();
@@ -27,6 +27,9 @@ class _SignUPState extends State<SignUP> {
           "name": userNameTextEditingController.text,
           "email": emailTextEditingController.text,
         };
+
+        HelperFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+        HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
       setState(() {
         isLoading = true;
       });
@@ -36,6 +39,7 @@ class _SignUPState extends State<SignUP> {
           .then((value) {
         print('$value.uid');
         databaseMethods.uploadUserInfo(userInfoMap);
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => SignIn()));
         setState(() {

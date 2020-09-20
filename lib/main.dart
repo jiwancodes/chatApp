@@ -1,3 +1,5 @@
+import 'package:chatApp/helper/helperfunctions.dart';
+import 'package:chatApp/views/chatroomscreen.dart';
 import 'package:chatApp/views/signin.dart';
 import 'package:flutter/material.dart';
 
@@ -5,8 +7,25 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool userIsLoggedIn;
+  @override
+  void initState(){
+     getLoggedInState();
+    super.initState();
+  }
+  getLoggedInState()async{
+    await HelperFunctions.getUserLoggedInSharedPreference().then((val){
+      setState(() {
+        userIsLoggedIn = val;
+      });
+    });
+  }
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -16,7 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:SignIn(),
+      home:userIsLoggedIn && userIsLoggedIn!=null?ChatRoom() : SignIn(),
     );
   }
 }

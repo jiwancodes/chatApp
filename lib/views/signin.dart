@@ -1,8 +1,11 @@
+import 'package:chatApp/helper/helperfunctions.dart';
 import 'package:chatApp/services/auth.dart';
+import 'package:chatApp/services/database.dart';
 import 'package:chatApp/views/chatroomscreen.dart';
 import 'package:chatApp/views/forgetpassword.dart';
 import 'package:chatApp/views/signup.dart';
 import 'package:chatApp/widgets/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,23 +17,41 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController emailTextEditingController =
       new TextEditingController();
   TextEditingController passwordTextEditingController =
       new TextEditingController();
+  QuerySnapshot snapshotUserInfo;
 
-  signMeIn() {
+  signMeIn() async {
     if (formKey.currentState.validate()) {
+       HelperFunctions.saveUserEmailSharedPreference(
+          emailTextEditingController.text);
       setState(() {
         isLoading = true;
       });
-      authMethods
+     
+      databaseMethods
+          .getUserByUserEmail(emailTextEditingController.text)
+          .then((val) {
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserNameSharedPreference(
+            snapshotUserInfo.documents[0].data["name"]);
+      });
+     await authMethods
           .signInWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((value) {
-        print("signed in");
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        if (value != null) {
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
+        else{
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => SignIn()));
+        }
       });
     }
   }
